@@ -485,12 +485,12 @@
         function submitDataKonseling(metodeDipilih) {
             // 1. Rangkum data menjadi format pesan teks yang rapi
             let pesan = Halo Konselor, ada permintaan jadwal konseling baru dari E-Konseling!\n\n;
-            pesan += Data Klien:\n;
+            pesan += *Data Klien:*\n;
             pesan += - Nama: ${profileData.name}\n;
             pesan += - No. WhatsApp: ${profileData.phone}\n;
             pesan += - Jenis kelamin: ${profileData.Jenis kelamin}\n;
             pesan += - Alamat: ${profileData.address}\n\n;
-            pesan += Detail Jadwal:\n;
+            pesan += *Detail Jadwal:*\n;
             pesan += - Tanggal: ${jadwalData.tanggal}\n;
             pesan += - Waktu: ${jadwalData.waktu} WIB\n;
             pesan += - Metode Komunikasi: ${metodeDipilih}\n\n;
