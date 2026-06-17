@@ -1,6 +1,523 @@
-body{
-  padding: 25px;
-}
-.title {
-	color: #5C6AC4;
-}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Konseling System Flow</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-green: #00A676;
+            --dark-green: #0C4E3D;
+            --text-gray: #555555;
+            --bg-light: #F8FBF9;
+            --white: #FFFFFF;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-gray); background-color: var(--bg-light); line-height: 1.6; }
+        h1, h2, h3, .logo-text { font-family: 'Lora', serif; color: var(--dark-green); }
+        
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; background-color: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo-text { font-size: 1.5rem; font-weight: 700; }
+        
+        button { font-family: inherit; }
+        .btn-primary {
+            background-color: var(--primary-green); color: var(--white);
+            padding: 10px 20px; border-radius: 20px; font-weight: 500; border: none; cursor: pointer; transition: 0.3s;
+        }
+        .btn-primary:hover { background-color: #008a62; }
+        .btn-outline {
+            background-color: transparent; color: var(--dark-green); border: 2px solid var(--dark-green);
+            padding: 10px 20px; border-radius: 20px; font-weight: 600; cursor: pointer; transition: 0.3s;
+        }
+        
+        /* Tombol Kembali di Pojok Kiri Atas */
+        .btn-back {
+            background: none; border: none; color: var(--dark-green); font-weight: 600; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 8px; font-size: 1rem;
+            transition: 0.2s; margin-bottom: 20px;
+        }
+        .btn-back:hover { color: var(--primary-green); }
+
+        /* Memastikan halaman memiliki ruang yang cukup */
+        .page { display: none; padding: 30px 5%; min-height: 80vh; position: relative; }
+        .page.active { display: block; animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .center-box {
+            background: var(--white); max-width: 500px; margin: 0 auto; padding: 30px;
+            border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center;
+        }
+
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #222; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-family: inherit;
+        }
+
+        .services-grid { display: grid; grid-template-columns: 1fr; gap: 15px; max-width: 800px; margin: 20px auto; }
+        @media (min-width: 768px) { .services-grid { grid-template-columns: 1fr 1fr; } }
+        .service-card {
+            background: var(--white); border: 1px solid #EBEBEB; border-radius: 12px; padding: 25px;
+            text-align: center; cursor: pointer; transition: 0.2s;
+        }
+        .service-card:hover { border-color: var(--primary-green); transform: translateY(-3px); }
+        .service-icon {
+            width: 50px; height: 50px; background-color: #E6F5F0; color: var(--primary-green);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 15px;
+        }
+
+        /* Styling untuk ringkasan data di halaman konfirmasi */
+        .summary-box {
+            background: #f0f8f5; padding: 20px; border-radius: 8px; text-align: left; 
+            margin-bottom: 20px; font-size: 0.95rem; border: 1px solid #cce5dc;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-text">E-Konseling</div>
+        <button id="navBtn" class="btn-primary" onclick="goToPage('page-register')">Registrasi / Login</button>
+    </nav>
+
+    <div id="page-home" class="page active">
+
+    <div style="text-align:center; max-width:800px; margin:40px auto;">
+
+        <h1>Selamat Datang di E-Konseling</h1>
+
+        <p style="margin-top:15px;">
+            E-Konseling merupakan layanan konseling berbasis digital yang membantu individu memperoleh layanan konseling secara mudah, aman, dan nyaman.
+        </p>
+
+        <button class="btn-primary"
+                style="margin-top:20px;"
+                onclick="goToPage('page-register')">
+            Mulai Konseling
+        </button>
+
+    </div>
+
+    <div class="services-grid" style="margin-top:50px;">
+
+        <div class="service-card">
+            <h3>Tentang E-Konseling</h3>
+            <p>
+                E-Konseling menyediakan layanan konseling secara online untuk membantu konseli dalam mengatasi berbagai permasalahan kehidupan.
+            </p>
+        </div>
+
+        <div class="service-card">
+            <h3>Tujuan E-Konseling</h3>
+            <p>
+                Membantu individu memahami diri, menyelesaikan masalah, mengambil keputusan, dan mengembangkan potensi secara optimal.
+            </p>
+        </div>
+
+    </div>
+
+    <h2 style="text-align:center; margin-top:50px;">
+        Layanan Konseling
+    </h2>
+
+    <div class="services-grid">
+
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fa-regular fa-user"></i>
+            </div>
+            <h3>Konseling Individu</h3>
+            <p>Membantu konseli mengatasi masalah pribadi dan pengembangan diri.</p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fa-solid fa-briefcase"></i>
+            </div>
+            <h3>Konseling Karier</h3>
+            <p>Membantu perencanaan pendidikan, pekerjaan, dan masa depan karier.</p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fa-solid fa-user-group"></i>
+            </div>
+            <h3>Konseling Kelompok</h3>
+            <p>Membantu pengembangan keterampilan sosial melalui dinamika kelompok.</p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fa-solid fa-house"></i>
+            </div>
+            <h3>Konseling Keluarga</h3>
+            <p>Membantu meningkatkan komunikasi dan keharmonisan dalam keluarga.</p>
+        </div>
+
+    </div>
+
+    <div class="service-card" style="max-width:900px; margin:40px auto;">
+        <h2>Keamanan Data dan Kerahasiaan Konseli</h2>
+
+        <p>
+            Seluruh data konseli dijaga kerahasiaannya sesuai dengan kode etik konseling. Informasi yang diberikan hanya digunakan untuk keperluan layanan konseling dan tidak disebarluaskan tanpa persetujuan konseli.
+        </p>
+    </div>
+
+</div>
+
+    <div id="page-register" class="page">
+        <button class="btn-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+        <div class="center-box">
+            <h2>Buat Akun Baru</h2>
+            <p style="margin-bottom: 20px;">Daftar terlebih dahulu untuk mengakses layanan.</p>
+            <div class="form-group">
+                <label>Email Baru</label>
+                <input type="email" id="regEmail" placeholder="Masukkan email">
+            </div>
+            <div class="form-group">
+                <label>Password Baru</label>
+                <input type="password" id="regPass" placeholder="Buat password">
+            </div>
+            <button class="btn-primary" style="width: 100%; margin-bottom: 15px;" onclick="registerAccount()">Daftar Akun</button>
+            <p style="font-size: 0.9rem;">Sudah punya akun? <a style="color: var(--primary-green); font-weight: bold; cursor: pointer;" onclick="goToPage('page-login')">Login di sini</a></p>
+        </div>
+    </div>
+
+    <div id="page-login" class="page">
+        <button class="btn-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+        <div class="center-box">
+            <h2>Masuk ke Akun</h2>
+            <p style="margin-bottom: 20px;">Silakan login menggunakan akun yang sudah dibuat.</p>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="logEmail" placeholder="Masukkan email terdaftar">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="logPass" placeholder="Masukkan password">
+            </div>
+            <button class="btn-primary" style="width: 100%;" onclick="loginAccount()">Login</button>
+        </div>
+    </div>
+
+    <div id="page-biodata" class="page">
+        <button class="btn-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+        <div class="center-box">
+            <h2>Registrasi Data Diri</h2>
+            <p style="margin-bottom: 20px;">Isi data diri Anda sebelum melanjutkan ke layanan konseling.</p>
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="profileName" placeholder="Masukkan nama lengkap">
+            </div>
+            <div class="form-group">
+                <label>Alamat</label>
+                <textarea id="profileAddress" rows="3" placeholder="Masukkan alamat lengkap" style="resize: vertical;"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Nomor Telepon (WhatsApp aktif)</label>
+                <input type="tel" id="profilePhone" placeholder="Masukkan nomor telepon">
+            </div>
+            <div class="form-group">
+                <label>NIK</label>
+                <input type="text" id="profileNIK" placeholder="Masukkan NIK">
+            </div>
+            <button class="btn-primary" style="width: 100%;" onclick="saveProfileData()">Simpan dan Lanjut</button>
+        </div>
+    </div>
+
+    <div id="page-layanan" class="page">
+        <button class="btn-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+        <div style="text-align: center;">
+            <h2>Pilih Jenis Layanan Konseling</h2>
+            <p>Pilih sesuai permasalahan & kebutuhan Anda</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card" onclick="goToPage('page-jadwal')">
+                <div class="service-icon"><i class="fa-regular fa-user"></i></div>
+                <h3>Konseling Individu</h3>
+            </div>
+            <div class="service-card" onclick="goToPage('page-jadwal')">
+                <div class="service-icon"><i class="fa-solid fa-briefcase"></i></div>
+                <h3>Konseling Karir</h3>
+            </div>
+            <div class="service-card" onclick="goToPage('page-jadwal')">
+                <div class="service-icon"><i class="fa-solid fa-user-group"></i></div>
+                <h3>Konseling Kelompok</h3>
+            </div>
+            <div class="service-card" onclick="goToPage('page-jadwal')">
+                <div class="service-icon"><i class="fa-solid fa-house"></i></div>
+                <h3>Konseling Keluarga</h3>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-jadwal" class="page">
+        <button class="btn-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+        <div class="center-box">
+            <h2>Tentukan Jadwal Konseling</h2>
+            <p style="margin-bottom: 20px;">Pilih waktu luang Anda agar konselor dapat menghubungi Anda.</p>
+            <div class="form-group">
+                <label>Pilih Tanggal</label>
+                <input type="date" id="jadwalTanggal">
+            </div>
+            <div class="form-group">
+                <label>Pilih Waktu</label>
+                <input type="time" id="jadwalWaktu">
+            </div>
+            <button class="btn-primary" style="width: 100%;" onclick="saveJadwal()">Lanjut Pilih Metode</button>
+        </div>
+    </div>
+
+    <div id="page-metode" class="page">
+        <button class="btn-back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+        <div class="center-box">
+            <h2>Pilih Metode Komunikasi</h2>
+            <p style="margin-bottom: 20px;">Bagaimana Anda ingin dihubungi oleh konselor pada jadwal tersebut?</p>
+            
+            <button class="btn-outline" style="width: 100%; margin-bottom: 10px;" onclick="submitDataKonseling('Chat WhatsApp')"><i class="fa-solid fa-message"></i> Chat via WhatsApp</button>
+            <button class="btn-outline" style="width: 100%; margin-bottom: 10px;" onclick="submitDataKonseling('Voice Call')"><i class="fa-solid fa-phone"></i> Voice Call via WhatsApp</button>
+            <button class="btn-primary" style="width: 100%; margin-bottom: 20px;" onclick="submitDataKonseling('Video Call')"><i class="fa-solid fa-video"></i> Video Call via WhatsApp</button>
+            
+            <p style="color: var(--primary-green); font-weight: bold; font-size: 0.9rem;">
+                <i class="fa-solid fa-lock"></i> Data Anda aman dan hanya dibagikan dengan konselor yang bertugas.
+            </p>
+        </div>
+    </div>
+
+    <div id="page-konfirmasi" class="page">
+        <div class="center-box">
+            <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: var(--primary-green); margin-bottom: 15px;"></i>
+            <h2>Jadwal Berhasil Dibuat!</h2>
+            <p style="margin-bottom: 20px;">Data diri, metode, dan jadwal Anda telah disiapkan untuk dikirim ke WhatsApp konselor.</p>
+            
+            <div class="summary-box">
+                <strong>Ringkasan Jadwal Anda:</strong><br><br>
+                <i class="fa-solid fa-user"></i> <span id="konfNama"></span><br>
+                <i class="fa-solid fa-phone"></i> <span id="konfPhone"></span><br>
+                <i class="fa-solid fa-calendar"></i> <span id="konfTanggal"></span><br>
+                <i class="fa-solid fa-clock"></i> <span id="konfWaktu"></span> WIB<br>
+                <i class="fa-solid fa-headset"></i> Metode: <strong><span id="konfMetode"></span></strong>
+            </div>
+
+            <p style="font-size: 0.9rem; margin-bottom: 25px; color: var(--dark-green);">
+                Mohon pastikan perangkat dan nomor WhatsApp Anda aktif pada jadwal tersebut. Konselor akan langsung menghubungi Anda.
+            </p>
+            
+            <button class="btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="goToPage('page-home')">Kembali ke Beranda</button>
+            <button class="btn-outline" style="width: 100%;" onclick="goToPage('page-feedback')">Simulasi Selesai (Beri Feedback)</button>
+        </div>
+    </div>
+
+    <div id="page-feedback" class="page">
+        <div class="center-box">
+            <h2>Berikan Feedback</h2>
+            <p style="margin-bottom: 20px;">Evaluasi layanan yang baru saja diterima.</p>
+            <div class="form-group">
+                <label>Penilaian Bintang (1-5)</label>
+                <select>
+                    <option>5 - Sangat Membantu</option>
+                    <option>4 - Membantu</option>
+                    <option>3 - Cukup</option>
+                    <option>2 - Kurang</option>
+                    <option>1 - Buruk</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Pesan untuk Konselor</label>
+                <textarea rows="4" placeholder="Tuliskan pengalaman Anda..."></textarea>
+            </div>
+            <button class="btn-primary" style="width: 100%;" onclick="goToPage('page-lanjutan')">Kirim Penilaian</button>
+        </div>
+    </div>
+
+    <div id="page-lanjutan" class="page">
+        <div class="center-box">
+            <h2>Butuh Sesi Lanjutan?</h2>
+            <p style="margin-bottom: 20px;">Apakah Anda ingin menjadwalkan sesi tambahan dengan konselor ini?</p>
+            <button class="btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="goToPage('page-jadwal')">Ya, Atur Jadwal Lagi</button>
+            <button class="btn-outline" style="width: 100%;" onclick="logout()">Tidak, Selesai (Logout)</button>
+        </div>
+    </div>
+
+    <script>
+        // --- LOGIKA NAVIGASI & TOMBOL KEMBALI ---
+        let historyStack = ['page-home'];
+
+        function goToPage(pageId, isBack = false) {
+            let pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+
+            if (!isBack && historyStack[historyStack.length - 1] !== pageId) {
+                historyStack.push(pageId);
+            }
+        }
+
+        function goBack() {
+            if (historyStack.length > 1) {
+                historyStack.pop(); 
+                let prevPage = historyStack[historyStack.length - 1]; 
+                goToPage(prevPage, true); 
+            }
+        }
+
+        // --- LOGIKA DATA STATE ---
+        let registeredEmail = "";
+        let registeredPassword = "";
+        let isLoggedIn = false;
+        
+        let profileData = { name: "", address: "", phone: "", nik: "" };
+        let jadwalData = { tanggal: "", waktu: "" };
+
+        // --- LOGIKA REGISTRASI & LOGIN ---
+        function registerAccount() {
+            let email = document.getElementById('regEmail').value;
+            let pass = document.getElementById('regPass').value;
+            
+            if (email !== "" && pass !== "") {
+                registeredEmail = email;
+                registeredPassword = pass;
+                alert("Akun berhasil dibuat! Silakan login menggunakan akun tersebut.");
+                
+                document.getElementById('regEmail').value = "";
+                document.getElementById('regPass').value = "";
+                
+                goToPage('page-login');
+            } else {
+                alert("Harap isi email dan password untuk mendaftar!");
+            }
+        }
+
+        function loginAccount() {
+            let email = document.getElementById('logEmail').value;
+            let pass = document.getElementById('logPass').value;
+
+            if (email === "" || pass === "") {
+                alert("Email dan Password tidak boleh kosong!");
+                return;
+            }
+
+            if (registeredEmail === "") {
+                alert("Akun belum terdaftar! Silakan buat akun (registrasi) terlebih dahulu.");
+                return;
+            }
+
+            if (email === registeredEmail && pass === registeredPassword) {
+                isLoggedIn = true;
+                
+                let navBtn = document.getElementById('navBtn');
+                navBtn.innerText = "Logout";
+                navBtn.className = "btn-outline";
+                navBtn.setAttribute("onclick", "logout()");
+
+                document.getElementById('logEmail').value = "";
+                document.getElementById('logPass').value = "";
+
+                goToPage('page-biodata');
+            } else {
+                alert("Login Gagal! Email atau kata sandi yang Anda masukkan salah.");
+            }
+        }
+
+        // --- LOGIKA SIMPAN PROFIL ---
+        function saveProfileData() {
+            let name = document.getElementById('profileName').value.trim();
+            let address = document.getElementById('profileAddress').value.trim();
+            let phone = document.getElementById('profilePhone').value.trim();
+            let jenis kelamin= document.getElementById('profileJenis kelamin').value.trim();
+
+            if (!name || !address || !phone || !nik) {
+                alert("Harap lengkapi semua data diri sebelum melanjutkan.");
+                return;
+            }
+
+            profileData.name = name;
+            profileData.address = address;
+            profileData.phone = phone;
+            profileData.Jenis kelamin = Jenis kelamin;
+
+            alert("Data diri berhasil disimpan. Selamat datang, " + name + "!");
+            goToPage('page-layanan');
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            
+            let navBtn = document.getElementById('navBtn');
+            navBtn.innerText = "Registrasi / Login";
+            navBtn.className = "btn-primary";
+            navBtn.setAttribute("onclick", "goToPage('page-register')");
+
+            historyStack = ['page-home'];
+            goToPage('page-home');
+            alert("Anda telah berhasil logout.");
+        }
+
+        // --- LOGIKA SIMPAN JADWAL ---
+        function saveJadwal() {
+            let tgl = document.getElementById('jadwalTanggal').value;
+            let wkt = document.getElementById('jadwalWaktu').value;
+
+            if (!tgl || !wkt) {
+                alert("Harap tentukan tanggal dan waktu konseling terlebih dahulu.");
+                return;
+            }
+
+            jadwalData.tanggal = tgl;
+            jadwalData.waktu = wkt;
+
+            goToPage('page-metode');
+        }
+
+        // --- LOGIKA SUBMIT DATA KE WHATSAPP KONSELOR ---
+        function submitDataKonseling(metodeDipilih) {
+            // 1. Rangkum data menjadi format pesan teks yang rapi
+            let pesan = Halo Konselor, ada permintaan jadwal konseling baru dari E-Konseling!\n\n;
+            pesan += Data Klien:\n;
+            pesan += - Nama: ${profileData.name}\n;
+            pesan += - No. WhatsApp: ${profileData.phone}\n;
+            pesan += - Jenis kelamin: ${profileData.Jenis kelamin}\n;
+            pesan += - Alamat: ${profileData.address}\n\n;
+            pesan += Detail Jadwal:\n;
+            pesan += - Tanggal: ${jadwalData.tanggal}\n;
+            pesan += - Waktu: ${jadwalData.waktu} WIB\n;
+            pesan += - Metode Komunikasi: ${metodeDipilih}\n\n;
+            pesan += Mohon segera tindak lanjuti dan hubungi klien pada waktu tersebut. Terima kasih.;
+
+            // 2. Ubah teks menjadi format URL-safe (agar spasi dan enter terbaca di WA)
+            let pesanEncoded = encodeURIComponent(pesan);
+
+            // 3. Nomor WhatsApp tujuan 
+            let nomorWA = "6282371895490";
+
+            // 4. Buat link WhatsApp API
+            let urlWhatsApp = https://wa.me/${nomorWA}?text=${pesanEncoded};
+
+            // 5. Buka link WhatsApp di tab/aplikasi baru
+            window.open(urlWhatsApp, '_blank');
+
+            // 6. Tampilkan rekapitulasi di halaman konfirmasi sistem untuk klien
+            document.getElementById('konfNama').innerText = profileData.name;
+            document.getElementById('konfPhone').innerText = profileData.phone;
+            document.getElementById('konfTanggal').innerText = jadwalData.tanggal;
+            document.getElementById('konfWaktu').innerText = jadwalData.waktu;
+            document.getElementById('konfMetode').innerText = metodeDipilih;
+
+            // Alihkan klien ke halaman konfirmasi
+            goToPage('page-konfirmasi');
+        }
+    </script>
+</body>
+</html>
